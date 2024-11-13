@@ -24,13 +24,51 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Rain Alert"),
+        leading: IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).pushNamed('/addCity');
+          },
+        ),
+        title: FutureBuilder<Map<String, dynamic>?>(
+          future: _loadWeatherData(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text("Carregando...");
+            } else if (snapshot.hasError || snapshot.data == null) {
+              return const Text("Erro");
+            } else {
+              final weatherData = snapshot.data!;
+              final cityName = weatherData['name'];
+              return Text(cityName); // Exibe o nome da cidade no centro do AppBar
+            }
+          },
+        ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.login),
-            onPressed: () {
-              Navigator.of(context).pushNamed('/login');
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'login') {
+                Navigator.of(context).pushNamed('/login');
+              } else if (value == 'settings') {
+                Navigator.of(context).pushNamed('/settings');
+              } else if (value == 'notifications') {
+                Navigator.of(context).pushNamed('/notifications');
+              }
             },
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem(
+                value: 'login',
+                child: Text('Login'),
+              ),
+              const PopupMenuItem(
+                value: 'settings',
+                child: Text('Configurações'),
+              ),
+              const PopupMenuItem(
+                value: 'notifications',
+                child: Text('Histórico de Notificações'),
+              ),
+            ],
           ),
         ],
       ),
@@ -58,8 +96,8 @@ class HomePage extends StatelessWidget {
                     style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Temperatura: ${temperature.toStringAsFixed(1)}°C",
-                    style: const TextStyle(fontSize: 20),
+                    "${temperature.toStringAsFixed(1)}°C",
+                    style: const TextStyle(fontSize: 32),
                   ),
                   Text(
                     "Clima: $description",
