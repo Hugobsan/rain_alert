@@ -7,6 +7,8 @@ import 'package:rain_alert/shared/services/geolocator_service.dart';
 import 'package:rain_alert/shared/services/weather_service.dart';
 
 class AppWidget extends StatelessWidget {
+  const AppWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
