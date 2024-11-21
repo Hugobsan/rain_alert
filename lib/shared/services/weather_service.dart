@@ -28,7 +28,7 @@ class WeatherService {
     }
   }
 
-  /// Obtém previsão de 4 dias a partir da previsão a cada 3 horas
+  /// Obtém previsão de tempo com base na latitude e longitude
   Future<List<Map<String, dynamic>>> getForecast({
     required double latitude,
     required double longitude,
@@ -62,11 +62,13 @@ class WeatherService {
             };
           } else {
             // Atualiza as temperaturas mínimas e máximas
-            dailyForecasts[dayKey]?['temp_min'] = (forecast['main']['temp_min'] <
+            dailyForecasts[dayKey]?['temp_min'] = (forecast['main']
+                        ['temp_min'] <
                     dailyForecasts[dayKey]?['temp_min'])
                 ? forecast['main']['temp_min']
                 : dailyForecasts[dayKey]?['temp_min'];
-            dailyForecasts[dayKey]?['temp_max'] = (forecast['main']['temp_max'] >
+            dailyForecasts[dayKey]?['temp_max'] = (forecast['main']
+                        ['temp_max'] >
                     dailyForecasts[dayKey]?['temp_max'])
                 ? forecast['main']['temp_max']
                 : dailyForecasts[dayKey]?['temp_max'];
@@ -84,6 +86,27 @@ class WeatherService {
     } catch (e) {
       print('Erro na requisição: $e');
       throw Exception('Erro ao carregar previsões');
+    }
+  }
+
+  /// Novo método: Obtém informações climáticas com base no nome da cidade
+  Future<Map<String, dynamic>?> getWeatherByCityName(String cityName) async {
+    final url = Uri.parse(
+      '$_baseUrl/weather?q=$cityName&appid=$_apiKey&units=metric&lang=pt_br',
+    );
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        print('Erro na requisição: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Erro na requisição: $e');
+      return null;
     }
   }
 }

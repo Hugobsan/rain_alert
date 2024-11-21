@@ -2,7 +2,7 @@ import 'package:geolocator/geolocator.dart';
 
 class GeolocatorService {
   /// Verifica permissões e obtém a localização atual do usuário.
-  Future<Position?> getCurrentLocation() async {
+  Future<Map<String, double>?> getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -28,11 +28,16 @@ class GeolocatorService {
       return null;
     }
 
-    // Permissões concedidas, obtém a posição atual usando LocationSettings
-    return await Geolocator.getCurrentPosition(
-      locationSettings: LocationSettings(
+    // Permissões concedidas, obtém a posição atual
+    Position position = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
       ),
     );
+
+    return {
+      'latitude': position.latitude,
+      'longitude': position.longitude,
+    };
   }
 }
