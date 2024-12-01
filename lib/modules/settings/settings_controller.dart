@@ -14,31 +14,29 @@ class SettingsController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Atualiza uma configuração e salva no banco
-  Future<void> updateSetting(String key, dynamic value) async {
-    if (currentSettings == null) return;
+  /// Atualiza uma configuração e retorna uma mensagem de status
+  Future<String> updateSetting(String key, dynamic value) async {
+    try {
+      if (currentSettings == null) {
+        return 'Erro: Configurações não carregadas';
+      }
 
-    // Atualiza o valor localmente
-    switch (key) {
-      case 'temp_unit':
-        currentSettings = currentSettings!.copyWith(tempUnit: value);
-        break;
-      case 'wind_unit':
-        currentSettings = currentSettings!.copyWith(windUnit: value);
-        break;
-      case 'pressure_unit':
-        currentSettings = currentSettings!.copyWith(pressureUnit: value);
-        break;
-      case 'pred_cities_count':
-        currentSettings = currentSettings!.copyWith(predCitiesCount: value);
-        break;
-      case 'prefer_update_time':
-        currentSettings = currentSettings!.copyWith(preferUpdateTime: value);
-        break;
+      // Atualiza localmente
+      currentSettings = currentSettings!.copyWith(
+        tempUnit: key == 'temp_unit' ? value : currentSettings!.tempUnit,
+        windUnit: key == 'wind_unit' ? value : currentSettings!.windUnit,
+        pressureUnit: key == 'pressure_unit' ? value : currentSettings!.pressureUnit,
+        predCitiesCount: key == 'pred_cities_count' ? value : currentSettings!.predCitiesCount,
+        preferUpdateTime: key == 'prefer_update_time' ? value : currentSettings!.preferUpdateTime,
+      );
+
+      // Salva no banco
+      await Settings.update(currentSettings!);
+
+      notifyListeners();
+      return 'Configuração atualizada com sucesso!';
+    } catch (e) {
+      return 'Erro ao salvar a configuração';
     }
-
-    // Salva no banco
-    await Settings.update(currentSettings!);
-    notifyListeners();
   }
 }

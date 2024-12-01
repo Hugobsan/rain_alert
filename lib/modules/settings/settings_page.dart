@@ -65,9 +65,14 @@ class SettingsPage extends StatelessWidget {
                   child: Text('Kelvin (K)', style: TextStyle(color: Colors.white)),
                 ),
               ],
-              onChanged: (value) {
+              onChanged: (value) async {
                 if (value != null) {
-                  controller.updateSetting('temp_unit', value);
+                  final message = await controller.updateSetting('temp_unit', value);
+
+                  // Exibe SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+                  );
                 }
               },
             ),
@@ -98,9 +103,14 @@ class SettingsPage extends StatelessWidget {
                   child: Text('m/s', style: TextStyle(color: Colors.white)),
                 ),
               ],
-              onChanged: (value) {
+              onChanged: (value) async {
                 if (value != null) {
-                  controller.updateSetting('wind_unit', value);
+                  final message = await controller.updateSetting('wind_unit', value);
+
+                  // Exibe SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+                  );
                 }
               },
             ),
@@ -131,9 +141,14 @@ class SettingsPage extends StatelessWidget {
                   child: Text('mmHg', style: TextStyle(color: Colors.white)),
                 ),
               ],
-              onChanged: (value) {
+              onChanged: (value) async {
                 if (value != null) {
-                  controller.updateSetting('pressure_unit', value);
+                  final message = await controller.updateSetting('pressure_unit', value);
+
+                  // Exibe SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+                  );
                 }
               },
             ),
@@ -155,10 +170,15 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               keyboardType: TextInputType.number,
-              onChanged: (value) {
+              onChanged: (value) async {
                 final intValue = int.tryParse(value);
                 if (intValue != null && intValue >= 1 && intValue <= 10) {
-                  controller.updateSetting('pred_cities_count', intValue);
+                  final message = await controller.updateSetting('pred_cities_count', intValue);
+
+                  // Exibe SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+                  );
                 }
               },
             ),
@@ -186,14 +206,49 @@ class SettingsPage extends StatelessWidget {
                 final time = await showTimePicker(
                   context: context,
                   initialTime: TimeOfDay(
-                    hour: int.parse(settings.preferUpdateTime.split(':')[0]),
-                    minute: int.parse(settings.preferUpdateTime.split(':')[1]),
+                  hour: int.parse(settings.preferUpdateTime.split(':')[0]),
+                  minute: int.parse(settings.preferUpdateTime.split(':')[1]),
                   ),
+                  builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                    data: ThemeData.dark().copyWith(
+                    colorScheme: ColorScheme.dark(
+                      primary: Colors.white,
+                      onPrimary: Colors.black,
+                      surface: Colors.black,
+                      onSurface: Colors.white,
+                    ),
+                    dialogBackgroundColor: Colors.black,
+                    timePickerTheme: TimePickerThemeData(
+                      dialHandColor: Colors.white,
+                      dialBackgroundColor: Colors.grey[900],
+                      hourMinuteTextColor: Colors.white,
+                      hourMinuteColor: Colors.grey[900],
+                      hourMinuteShape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(color: Colors.white),
+                      ),
+                      inputDecorationTheme: const InputDecorationTheme(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      ),
+                    ),
+                    ),
+                    child: child!,
+                  );
+                  },
                 );
                 if (time != null) {
                   final formattedTime =
                       '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-                  controller.updateSetting('prefer_update_time', formattedTime);
+                  final message =
+                      await controller.updateSetting('prefer_update_time', formattedTime);
+
+                  // Exibe SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
+                  );
                 }
               },
             ),
