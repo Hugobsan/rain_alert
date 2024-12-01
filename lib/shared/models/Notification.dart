@@ -64,12 +64,19 @@ class NotificationModel {
     );
   }
 
-  static Future<int> delete(int id) async {
+  //Função para deletar a instância atual do objeto no banco
+  Future<int> delete() async {
     final db = await DatabaseHelper().database;
     return await db.delete(
       'notifications',
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  //Função para persistir no banco o estado atual do objeto
+  Future<int> save() async {
+    final db = await DatabaseHelper().database;
+    return await db.insert('notifications', toMap());
   }
 }

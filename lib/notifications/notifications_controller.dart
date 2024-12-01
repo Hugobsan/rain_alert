@@ -16,4 +16,25 @@ class NotificationsController extends ChangeNotifier {
       rethrow;
     }
   }
+
+  // Método para adicionar uma notificação de exemplo
+  Future<void> addExampleNotification() async {
+    // Criando uma notificação de exemplo
+    final notification = NotificationModel(
+      type: 'Alerta de Chuva',
+      cityId:
+          1, // Usando um cityId genérico; você pode ajustar isso conforme necessário
+      text: 'Alerta de chuva! Prepare-se para a chuva em breve.',
+      colorPrimary: '0xFF2196F3', // Azul
+      colorSecondary: '0xFFBBDEFB', // Azul claro para a cor secundária
+      icon: '0xe2c9', // Ícone de nuvem com gotas (em hexadecimal)
+    );
+
+    // Salvando a notificação no banco de dados
+    await notification.save(); // Método para salvar no banco de dados
+
+    // Atualizando a lista de notificações
+    _notifications.add(notification);
+    notifyListeners(); // Notifica que as notificações foram atualizadas
+  }
 }
