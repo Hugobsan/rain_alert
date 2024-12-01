@@ -1,3 +1,5 @@
+import 'package:rain_alert/shared/db/database_helper.dart';
+
 class NotificationModel {
   final int? id;
   final String type;
@@ -38,6 +40,36 @@ class NotificationModel {
       colorPrimary: map['color_primary'],
       colorSecondary: map['color_secondary'],
       icon: map['icon'],
+    );
+  }
+
+  static Future<int> insert(NotificationModel notification) async {
+    final db = await DatabaseHelper().database;
+    return await db.insert('notifications', notification.toMap());
+  }
+
+  static Future<List<NotificationModel>> getAll() async {
+    final db = await DatabaseHelper().database;
+    final result = await db.query('notifications');
+    return result.map((map) => NotificationModel.fromMap(map)).toList();
+  }
+
+  static Future<int> update(NotificationModel notification) async {
+    final db = await DatabaseHelper().database;
+    return await db.update(
+      'notifications',
+      notification.toMap(),
+      where: 'id = ?',
+      whereArgs: [notification.id],
+    );
+  }
+
+  static Future<int> delete(int id) async {
+    final db = await DatabaseHelper().database;
+    return await db.delete(
+      'notifications',
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 }

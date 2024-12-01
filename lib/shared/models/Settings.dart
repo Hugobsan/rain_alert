@@ -1,10 +1,12 @@
+import 'package:rain_alert/shared/db/database_helper.dart';
+
 class Settings {
   final int? id;
-  final String tempUnit; // Unidade de temperatura (C, K, F)
-  final int predCitiesCount; // Quantidade de cidades para predição
-  final String windUnit; // Unidade de vento (km/h, m/s, etc.)
-  final String pressureUnit; // Unidade de pressão (hPa, mmHg, etc.)
-  final String preferUpdateTime; // Horário preferido para atualização
+  final String tempUnit;
+  final int predCitiesCount;
+  final String windUnit;
+  final String pressureUnit;
+  final String preferUpdateTime;
 
   Settings({
     this.id,
@@ -34,6 +36,25 @@ class Settings {
       windUnit: map['wind_unit'],
       pressureUnit: map['pressure_unit'],
       preferUpdateTime: map['prefer_update_time'],
+    );
+  }
+
+  static Future<Settings?> getSettings() async {
+    final db = await DatabaseHelper().database;
+    final result = await db.query('settings');
+    if (result.isNotEmpty) {
+      return Settings.fromMap(result.first);
+    }
+    return null;
+  }
+
+  static Future<int> update(Settings settings) async {
+    final db = await DatabaseHelper().database;
+    return await db.update(
+      'settings',
+      settings.toMap(),
+      where: 'id = ?',
+      whereArgs: [settings.id],
     );
   }
 }
