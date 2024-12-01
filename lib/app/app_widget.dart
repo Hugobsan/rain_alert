@@ -1,6 +1,8 @@
 // lib/app/app_widget.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rain_alert/modules/add_city/cities_controller.dart';
+import 'package:rain_alert/modules/add_city/cities_page.dart';
 import 'package:rain_alert/modules/home/home_page.dart';
 import 'package:rain_alert/modules/home/home_page_controller.dart';
 import 'package:rain_alert/modules/splash/splash_controller.dart';
@@ -29,6 +31,10 @@ class AppWidget extends StatelessWidget {
         initialRoute: '/splash',
         routes: {
           '/splash': (context) => SplashPage(),
+          '/addCity': (context) => ChangeNotifierProvider(
+                create: (context) => CitiesController(context),
+                child: CitiesPage(),
+              ),
           '/home': (context) => Provider(
                 create: (context) => HomeController(context),
                 child: HomePage(),
