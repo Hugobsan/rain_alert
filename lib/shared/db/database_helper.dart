@@ -81,7 +81,7 @@ class DatabaseHelper {
     // Inserir valores padrão em settings
     await db.insert('settings', {
       'temp_unit': 'C',
-      'pred_cities_count': 5,
+      'pred_cities_count': 6,
       'wind_unit': 'km/h',
       'pressure_unit': 'hPa',
       'prefer_update_time': '08:00',
