@@ -1,18 +1,25 @@
 // lib/modules/home/home_controller.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rain_alert/shared/models/Settings.dart';
 import '../../shared/services/geolocator_service.dart';
 import '../../shared/services/weather_service.dart';
 
 class HomeController {
   late GeolocatorService geolocatorService;
   late WeatherService weatherService;
+  Settings? currentSettings;
   Map<String, double>? currentLocation;
   Map<String, dynamic>? _currentWeatherData;
 
   HomeController(BuildContext context) {
     geolocatorService = Provider.of<GeolocatorService>(context, listen: false);
     weatherService = Provider.of<WeatherService>(context, listen: false);
+  }
+
+  /// Carrega as configurações
+  Future<void> loadSettings() async {
+    currentSettings = await Settings.getSettings();
   }
 
   /// Carrega e armazena a localização atual
@@ -29,9 +36,11 @@ class HomeController {
         await loadCurrentLocation();
       }
       if (currentLocation != null) {
+        final unit = currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric';
         _currentWeatherData = await weatherService.getWeather(
           currentLocation!['latitude']!,
           currentLocation!['longitude']!,
+          unit,
         );
       }
     }
@@ -39,15 +48,19 @@ class HomeController {
   }
 
   /// Carrega a previsão do clima para os próximos dias
+  /// Carrega a previsão do clima para os próximos dias
   Future<List<Map<String, dynamic>>> loadForecastData() async {
     if (currentLocation == null) {
       await loadCurrentLocation();
     }
     if (currentLocation != null) {
+      final count = currentSettings?.predCitiesCount ?? 6;
+      final unit = currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric';
       return await weatherService.getForecast(
         latitude: currentLocation!['latitude']!,
         longitude: currentLocation!['longitude']!,
-        count: 6,
+        count: count,
+        unit: unit,
       );
     }
     return [];

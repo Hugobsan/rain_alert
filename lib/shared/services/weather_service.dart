@@ -8,9 +8,9 @@ class WeatherService {
 
   /// Obtém informações climáticas com base na latitude e longitude
   Future<Map<String, dynamic>?> getWeather(
-      double latitude, double longitude) async {
+      double latitude, double longitude, String unit) async {
     final url = Uri.parse(
-      '$_baseUrl/weather?lat=$latitude&lon=$longitude&appid=$_apiKey&units=metric&lang=pt_br',
+      '$_baseUrl/weather?lat=$latitude&lon=$longitude&appid=$_apiKey&units=$unit&lang=pt_br',
     );
 
     try {
@@ -33,9 +33,10 @@ class WeatherService {
     required double latitude,
     required double longitude,
     int count = 4,
+    String unit = 'metric',
   }) async {
     final url = Uri.parse(
-      '$_baseUrl/forecast?lat=$latitude&lon=$longitude&appid=$_apiKey&units=metric&lang=pt_br',
+      '$_baseUrl/forecast?lat=$latitude&lon=$longitude&appid=$_apiKey&units=$unit&lang=pt_br',
     );
 
     try {

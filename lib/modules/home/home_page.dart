@@ -113,7 +113,7 @@ class HomePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "${weatherData['main']['temp'].toStringAsFixed(1)}°C",
+                            "${weatherData['main']['temp'].toStringAsFixed(1)}${homeController.currentSettings?.getFormattedTempUnit()['unit'] ?? '°C'}",
                             style: TextStyle(fontSize: 75, color: textColor),
                           ),
                           Icon(
@@ -127,7 +127,7 @@ class HomePage extends StatelessWidget {
                             style: TextStyle(fontSize: 18, color: textColor),
                           ),
                           Text(
-                            "Mínima: ${weatherData['main']['temp_min'].toStringAsFixed(1)}° / Máxima: ${weatherData['main']['temp_max'].toStringAsFixed(1)}°",
+                            "Mínima: ${weatherData['main']['temp_min'].toStringAsFixed(1)}${homeController.currentSettings?.getFormattedTempUnit()['unit'] ?? '°C'} / Máxima: ${weatherData['main']['temp_max'].toStringAsFixed(1)}${homeController.currentSettings?.getFormattedTempUnit()['unit'] ?? '°C'}",
                             style: TextStyle(fontSize: 16, color: textColor),
                           ),
                         ],
@@ -146,13 +146,21 @@ class HomePage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 8.0, horizontal: 16.0),
-                    child: Text(
-                      "Previsão para os próximos 6 dias",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
+                    child: FutureBuilder<void>(
+                      future: homeController.loadSettings(),
+                      builder: (context, snapshot) {
+                        final count =
+                            homeController.currentSettings?.predCitiesCount ??
+                                6;
+                        return Text(
+                          "Previsão para os próximos $count dias",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: textColor,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Expanded(
@@ -188,7 +196,7 @@ class HomePage extends StatelessWidget {
                                   style: TextStyle(color: textColor),
                                 ),
                                 trailing: Text(
-                                  "${dayForecast['temp_max'].toStringAsFixed(1)}° / ${dayForecast['temp_min'].toStringAsFixed(1)}°",
+                                  "${dayForecast['temp_max'].toStringAsFixed(1)}${homeController.currentSettings?.getFormattedTempUnit()['unit'] ?? '°C'} / ${dayForecast['temp_min'].toStringAsFixed(1)}${homeController.currentSettings?.getFormattedTempUnit()['unit'] ?? '°C'}",
                                   style:
                                       TextStyle(color: textColor, fontSize: 16),
                                 ),

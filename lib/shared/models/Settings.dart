@@ -78,4 +78,17 @@ class Settings {
       whereArgs: [settings.id],
     );
   }
+
+  Map<String, dynamic> getFormattedTempUnit() {
+    switch (tempUnit) {
+      case 'C':
+        return {'unit': '°C', 'name': 'Celsius', 'apiUnit': 'metric'};
+      case 'K':
+        return {'unit': 'K', 'name': 'Kelvin', 'apiUnit': 'standard'};
+      case 'F':
+        return {'unit': '°F', 'name': 'Fahrenheit', 'apiUnit': 'imperial'};
+      default:
+        return {'unit': '°C', 'name': 'Celsius', 'apiUnit': 'metric'};
+    }
+  }
 }
