@@ -5,6 +5,8 @@ import 'package:rain_alert/modules/add_city/cities_controller.dart';
 import 'package:rain_alert/modules/add_city/cities_page.dart';
 import 'package:rain_alert/modules/home/home_page.dart';
 import 'package:rain_alert/modules/home/home_page_controller.dart';
+import 'package:rain_alert/modules/settings/settings_controller.dart';
+import 'package:rain_alert/modules/settings/settings_page.dart';
 import 'package:rain_alert/modules/splash/splash_controller.dart';
 import 'package:rain_alert/modules/splash/splash_page.dart';
 import 'package:rain_alert/shared/services/geolocator_service.dart';
@@ -20,6 +22,8 @@ class AppWidget extends StatelessWidget {
         Provider(create: (_) => SplashController()),
         Provider(create: (_) => GeolocatorService()),
         Provider(create: (_) => WeatherService()),
+        ChangeNotifierProvider(create: (_) => SettingsController()),
+
         // Controller será inicializado automaticamente
       ],
       child: MaterialApp(
@@ -39,6 +43,7 @@ class AppWidget extends StatelessWidget {
                 create: (context) => HomeController(context),
                 child: HomePage(),
               ),
+          '/settings': (context) => SettingsPage(),
         },
       ),
     );

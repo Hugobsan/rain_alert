@@ -17,6 +17,26 @@ class Settings {
     required this.preferUpdateTime,
   });
 
+  /// Método para criar uma nova instância de Settings com alterações específicas
+  Settings copyWith({
+    int? id,
+    String? tempUnit,
+    int? predCitiesCount,
+    String? windUnit,
+    String? pressureUnit,
+    String? preferUpdateTime,
+  }) {
+    return Settings(
+      id: id ?? this.id,
+      tempUnit: tempUnit ?? this.tempUnit,
+      predCitiesCount: predCitiesCount ?? this.predCitiesCount,
+      windUnit: windUnit ?? this.windUnit,
+      pressureUnit: pressureUnit ?? this.pressureUnit,
+      preferUpdateTime: preferUpdateTime ?? this.preferUpdateTime,
+    );
+  }
+
+  /// Converte o objeto em um Map para salvar no banco
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -28,6 +48,7 @@ class Settings {
     };
   }
 
+  /// Cria um objeto a partir de um Map do banco
   factory Settings.fromMap(Map<String, dynamic> map) {
     return Settings(
       id: map['id'],
