@@ -1,16 +1,20 @@
 // lib/modules/home/home_controller.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rain_alert/shared/models/City.dart';
 import 'package:rain_alert/shared/models/Settings.dart';
 import '../../shared/services/geolocator_service.dart';
 import '../../shared/services/weather_service.dart';
 
-class HomeController {
+class HomeController extends ChangeNotifier {
   late GeolocatorService geolocatorService;
   late WeatherService weatherService;
   Settings? currentSettings;
   Map<String, double>? currentLocation;
   Map<String, dynamic>? _currentWeatherData;
+  List<City> _savedCities = [];
+
+  List<City> get savedCities => _savedCities;
 
   HomeController(BuildContext context) {
     geolocatorService = Provider.of<GeolocatorService>(context, listen: false);
@@ -29,39 +33,69 @@ class HomeController {
     }
   }
 
+  /// Carrega as cidades salvas do banco de dados
+  Future<void> loadSavedCities() async {
+    final cities = await City.getAll();
+    _savedCities = cities;
+    notifyListeners(); // Notifica a interface para atualizar os dados
+  }
+
   /// Carrega e armazena os dados do clima atual
-  Future<Map<String, dynamic>?> loadWeatherData() async {
-    if (_currentWeatherData == null) {
-      if (currentLocation == null) {
-        await loadCurrentLocation();
-      }
-      if (currentLocation != null) {
-        final unit = currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric';
-        _currentWeatherData = await weatherService.getWeather(
-          currentLocation!['latitude']!,
-          currentLocation!['longitude']!,
-          unit,
-        );
+  Future<Map<String, dynamic>?> loadWeatherData({City? city}) async {
+    if (city != null) {
+      // Dados baseados na cidade selecionada
+      _currentWeatherData = await weatherService.getWeather(
+        city.latitude,
+        city.longitude,
+        currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric',
+      );
+    } else {
+      // Dados baseados na localização atual
+      if (_currentWeatherData == null) {
+        if (currentLocation == null) {
+          await loadCurrentLocation();
+        }
+        if (currentLocation != null) {
+          _currentWeatherData = await weatherService.getWeather(
+            currentLocation!['latitude']!,
+            currentLocation!['longitude']!,
+            currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric',
+          );
+        }
       }
     }
     return _currentWeatherData;
   }
 
   /// Carrega a previsão do clima para os próximos dias
-  /// Carrega a previsão do clima para os próximos dias
-  Future<List<Map<String, dynamic>>> loadForecastData() async {
-    if (currentLocation == null) {
-      await loadCurrentLocation();
-    }
-    if (currentLocation != null) {
+  Future<List<Map<String, dynamic>>> loadForecastData({City? city}) async {
+    if (city != null) {
+      // Previsão para a cidade selecionada
       final count = currentSettings?.predCitiesCount ?? 6;
-      final unit = currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric';
+      final unit =
+          currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric';
       return await weatherService.getForecast(
-        latitude: currentLocation!['latitude']!,
-        longitude: currentLocation!['longitude']!,
+        latitude: city.latitude,
+        longitude: city.longitude,
         count: count,
         unit: unit,
       );
+    } else {
+      // Previsão baseada na localização atual
+      if (currentLocation == null) {
+        await loadCurrentLocation();
+      }
+      if (currentLocation != null) {
+        final count = currentSettings?.predCitiesCount ?? 6;
+        final unit =
+            currentSettings?.getFormattedTempUnit()['apiUnit'] ?? 'metric';
+        return await weatherService.getForecast(
+          latitude: currentLocation!['latitude']!,
+          longitude: currentLocation!['longitude']!,
+          count: count,
+          unit: unit,
+        );
+      }
     }
     return [];
   }
