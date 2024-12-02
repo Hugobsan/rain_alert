@@ -76,7 +76,7 @@ class WeatherService {
           }
         }
 
-        // Retorna apenas os primeiros 4 dias
+        // Retorna apenas os primeiros dias
         return dailyForecasts.values
             .take(count)
             .toList()
@@ -90,7 +90,7 @@ class WeatherService {
     }
   }
 
-  /// Novo método: Obtém informações climáticas com base no nome da cidade
+  /// Obtém informações climáticas com base no nome da cidade
   Future<Map<String, dynamic>?> getWeatherByCityName(String cityName) async {
     final url = Uri.parse(
       '$_baseUrl/weather?q=$cityName&appid=$_apiKey&units=metric&lang=pt_br',

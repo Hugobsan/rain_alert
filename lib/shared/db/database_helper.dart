@@ -30,7 +30,6 @@ class DatabaseHelper {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // Tabela cities
     await db.execute('''
     CREATE TABLE cities (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +40,6 @@ class DatabaseHelper {
     )
   ''');
 
-    // Tabela notifications
     await db.execute('''
     CREATE TABLE notifications (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,7 +53,6 @@ class DatabaseHelper {
     )
   ''');
 
-    // Tabela jobs
     await db.execute('''
     CREATE TABLE jobs (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -66,7 +63,6 @@ class DatabaseHelper {
     )
   ''');
 
-    // Tabela settings
     await db.execute('''
     CREATE TABLE settings (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -78,7 +74,6 @@ class DatabaseHelper {
     )
   ''');
 
-    // Inserir valores padrão em settings
     await db.insert('settings', {
       'temp_unit': 'C',
       'pred_cities_count': 6,
@@ -88,7 +83,6 @@ class DatabaseHelper {
     });
   }
 
-  // Método genérico para executar comandos SQL
   Future<void> execute(String sql, [List<Object?>? arguments]) async {
     final db = await database;
     await db.execute(sql, arguments);

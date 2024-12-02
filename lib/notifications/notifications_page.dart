@@ -23,12 +23,10 @@ class NotificationsPage extends StatelessWidget {
         color: Colors.black,
         child: Column(
           children: [
-            // Botão para adicionar uma notificação de exemplo
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: ElevatedButton(
                 onPressed: () {
-                  // Chama o método no controller para adicionar a notificação
                   controller.addExampleNotification();
                 },
                 child: const Text(
@@ -36,7 +34,7 @@ class NotificationsPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // Cor do botão
+                  backgroundColor: Colors.blue,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 ),
@@ -46,7 +44,7 @@ class NotificationsPage extends StatelessWidget {
             Expanded(
               child: FutureBuilder<List<NotificationModel>>(
                 future:
-                    NotificationModel.getAll(), // Consulta diretamente o Model
+                    NotificationModel.getAll(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(

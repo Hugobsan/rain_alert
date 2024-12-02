@@ -9,7 +9,6 @@ class NotificationsController extends ChangeNotifier {
 
   List<NotificationModel> get notifications => _notifications;
 
-  // Método para carregar as notificações
   Future<void> loadNotifications() async {
     try {
       _notifications = await NotificationModel.getAll();
@@ -21,12 +20,10 @@ class NotificationsController extends ChangeNotifier {
     }
   }
 
-  // Método para adicionar uma notificação de exemplo
   Future<void> addExampleNotification() async {
     final notification = NotificationModel(
       type: 'Alerta de Chuva',
-      cityId:
-          1,
+      cityId: 1,
       text: 'Alerta de chuva! Prepare-se para a chuva em breve.',
       colorPrimary: '0xFF2196F3',
       colorSecondary: '0xFFBBDEFB',
@@ -41,7 +38,6 @@ class NotificationsController extends ChangeNotifier {
     await showNotification();
   }
 
-  // Método para exibir a notificação local
   Future<void> showNotification() async {
     var androidDetails = AndroidNotificationDetails(
       'your_channel_id',
