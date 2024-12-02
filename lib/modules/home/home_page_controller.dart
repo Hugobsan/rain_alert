@@ -37,7 +37,7 @@ class HomeController extends ChangeNotifier {
   Future<void> loadSavedCities() async {
     final cities = await City.getAll();
     _savedCities = cities;
-    notifyListeners(); // Notifica a interface para atualizar os dados
+    notifyListeners();
   }
 
   /// Carrega e armazena os dados do clima atual
@@ -109,7 +109,6 @@ class HomeController extends ChangeNotifier {
     return "Rain Alert";
   }
 
-  /// Retorna se é dia ou noite
   bool isDaytime() {
     final int currentHour = DateTime.now().hour;
     return currentHour >= 6 && currentHour < 18;
@@ -136,7 +135,7 @@ class HomeController extends ChangeNotifier {
           );
   }
 
-  /// Cor do texto baseada no horário do dia
+  /// Cor do texto baseada no horário do dia (Pelo menos era antes, agora ficou fixo e eu fiquei com preguiça de mudar)
   Color getTextColor() {
     return Colors.white;
   }

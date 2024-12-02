@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'cities_controller.dart';
-import '../../shared/models/city.dart';
 
 class CitiesPage extends StatelessWidget {
   const CitiesPage({super.key});

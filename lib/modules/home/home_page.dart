@@ -75,22 +75,13 @@ class _HomePageState extends State<HomePage> {
                 ? const Color.fromARGB(255, 2, 115, 209)
                 : const Color.fromARGB(255, 53, 67, 102),
             onSelected: (value) {
-              if (value == 'login') {
-                Navigator.of(context).pushNamed('/login');
-              } else if (value == 'settings') {
+              if (value == 'settings') {
                 Navigator.of(context).pushNamed('/settings');
               } else if (value == 'notifications') {
                 Navigator.of(context).pushNamed('/notifications');
               }
             },
             itemBuilder: (BuildContext context) => [
-              PopupMenuItem(
-                value: 'login',
-                child: Text(
-                  'Login',
-                  style: TextStyle(color: textColor),
-                ),
-              ),
               PopupMenuItem(
                 value: 'notifications',
                 child: Text(

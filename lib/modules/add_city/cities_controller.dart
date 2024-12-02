@@ -39,10 +39,8 @@ class CitiesController extends ChangeNotifier {
 
     await City.insert(city);
 
-    // Reseta a cidade após salvar
     cityData = null;
 
-    // Atualiza a lista de cidades salvas
     await refreshSavedCities();
   }
 

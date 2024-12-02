@@ -13,35 +13,31 @@ class NotificationsController extends ChangeNotifier {
   Future<void> loadNotifications() async {
     try {
       _notifications = await NotificationModel.getAll();
-      notifyListeners(); // Garante que os listeners serão atualizados.
+      notifyListeners();
     } catch (e) {
-      _notifications = []; // Define como vazio em caso de erro.
-      notifyListeners(); // Garante que a interface reflete o estado atual.
+      _notifications = [];
+      notifyListeners();
       rethrow;
     }
   }
 
   // Método para adicionar uma notificação de exemplo
   Future<void> addExampleNotification() async {
-    // Criando uma notificação de exemplo
     final notification = NotificationModel(
       type: 'Alerta de Chuva',
       cityId:
-          1, // Usando um cityId genérico; você pode ajustar isso conforme necessário
+          1,
       text: 'Alerta de chuva! Prepare-se para a chuva em breve.',
-      colorPrimary: '0xFF2196F3', // Azul
-      colorSecondary: '0xFFBBDEFB', // Azul claro para a cor secundária
-      icon: 'thunderstorm', // Nome do ícone
+      colorPrimary: '0xFF2196F3',
+      colorSecondary: '0xFFBBDEFB',
+      icon: 'thunderstorm',
     );
 
-    // Salvando a notificação no banco de dados
-    await notification.save(); // Método para salvar no banco de dados
+    await notification.save(); 
 
-    // Atualizando a lista de notificações
     _notifications.add(notification);
-    notifyListeners(); // Notifica que as notificações foram atualizadas
+    notifyListeners();
 
-    // Enviando uma notificação local
     await showNotification();
   }
 
@@ -59,11 +55,11 @@ class NotificationsController extends ChangeNotifier {
     var platformChannelSpecifics = NotificationDetails(android: androidDetails);
 
     await flutterLocalNotificationsPlugin.show(
-      0, // ID da notificação
-      'Alerta de Chuva', // Título
-      'Está chovendo na sua área', // Corpo da mensagem
+      0,
+      'Alerta de Chuva',
+      'Está chovendo na sua área, prepare o guarda-chuva!',
       platformChannelSpecifics,
-      payload: 'item x', // Payload (opcional)
+      payload: 'item x',
     );
   }
 

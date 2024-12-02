@@ -15,12 +15,11 @@ class SplashPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo ou ícone do app
             Icon(Icons.cloud, size: 80.0, color: Colors.blue),
             SizedBox(height: 20),
             Text("Rain Alert", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             SizedBox(height: 20),
-            CircularProgressIndicator(), // Indicador de carregamento
+            CircularProgressIndicator(),
           ],
         ),
       ),
