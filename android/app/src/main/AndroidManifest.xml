@@ -2,9 +2,10 @@
     <!-- Permissões de localização -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-        android:label="rain_alert"
+        android:label="Alertas climáticos"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

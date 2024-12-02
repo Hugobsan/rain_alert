@@ -13,6 +13,7 @@ import 'package:rain_alert/notifications/notifications_controller.dart';
 import 'package:rain_alert/notifications/notifications_page.dart';
 import 'package:rain_alert/shared/services/geolocator_service.dart';
 import 'package:rain_alert/shared/services/weather_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -53,6 +54,40 @@ class AppWidget extends StatelessWidget {
               ),
         },
       ),
+    );
+  }
+}
+
+class NotificationsController2 with ChangeNotifier {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  // Inicialização do plugin
+  Future<void> initializeNotifications() async {
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('app_icon');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: androidInitializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  // Enviar notificação local
+  Future<void> sendNotification(String title, String body) async {
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+      'channel_id', // ID do canal
+      'Rain Alert', // Nome do canal
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    const NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      notificationDetails,
     );
   }
 }

@@ -84,10 +84,7 @@ class NotificationsPage extends StatelessWidget {
                         child: ListTile(
                           tileColor: Colors.grey[850],
                           leading: Icon(
-                            IconData(
-                              int.parse(notification.icon),
-                              fontFamily: 'MaterialIcons',
-                            ),
+                            controller.getWeatherIcon(notification.icon),
                             color: Colors.white,
                           ),
                           title: Text(
