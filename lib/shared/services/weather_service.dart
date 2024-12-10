@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class WeatherService {
-  final String? _apiKey = dotenv.env['OPENWEATHER_API_KEY'];
+  final String _apiKey = "d420b8790f5661d4a8c45d61eeeab41f"; // Alterar pra chave .env em ambiente dev
   final String _baseUrl = 'https://api.openweathermap.org/data/2.5';
 
   /// Obtém informações climáticas com base na latitude e longitude

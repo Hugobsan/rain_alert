@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "537795028518",
+    "project_id": "rain-alert-b622f",
+    "storage_bucket": "rain-alert-b622f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537795028518:android:17fa47a7a551c1a2a268e7",
+        "android_client_info": {
+          "package_name": "com.unimontes.rain_alert"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0TUTUNQHem49KTZ5BOhgx0jYNXkV_dGQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

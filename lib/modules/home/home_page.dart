@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rain_alert/modules/home/home_page_controller.dart';
 import 'package:rain_alert/shared/models/City.dart';
+import 'package:rain_alert/shared/services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +14,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   City? _selectedCity;
+
+  final User? user = AuthService().currentUser;
+
+  Future<void> signOut() async {
+    await AuthService().signOut();
+    Navigator.of(context).pushReplacementNamed('/login');
+  }
 
   @override
   void initState() {
@@ -75,13 +84,24 @@ class _HomePageState extends State<HomePage> {
                 ? const Color.fromARGB(255, 2, 115, 209)
                 : const Color.fromARGB(255, 53, 67, 102),
             onSelected: (value) {
-              if (value == 'settings') {
+              if (value == 'login') {
+                Navigator.of(context).pushNamed('/login');
+              } else if (value == 'settings') {
                 Navigator.of(context).pushNamed('/settings');
               } else if (value == 'notifications') {
                 Navigator.of(context).pushNamed('/notifications');
+              } else if (value == 'logout') {
+                signOut();
               }
             },
             itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'login',
+                child: Text(
+                  'Login',
+                  style: TextStyle(color: textColor),
+                ),
+              ),
               PopupMenuItem(
                 value: 'notifications',
                 child: Text(
@@ -97,6 +117,14 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ],
+          ),
+          if (user != null)
+          PopupMenuItem(
+            value: 'logout',
+            child: Text(
+            'Logout',
+            style: TextStyle(color: textColor),
+            ),
           ),
         ],
       ),
@@ -211,6 +239,14 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                 ),
+                if (user != null)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Logged in as: ${user!.email}',
+                      style: TextStyle(color: textColor, fontSize: 16),
+                    ),
+                  ),
               ],
             ),
           ),

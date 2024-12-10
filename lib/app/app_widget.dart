@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rain_alert/modules/add_city/cities_controller.dart';
 import 'package:rain_alert/modules/add_city/cities_page.dart';
+import 'package:rain_alert/modules/auth/login_register_page.dart';
 import 'package:rain_alert/modules/home/home_page.dart';
 import 'package:rain_alert/modules/home/home_page_controller.dart';
 import 'package:rain_alert/modules/settings/settings_controller.dart';
@@ -11,6 +12,7 @@ import 'package:rain_alert/modules/splash/splash_controller.dart';
 import 'package:rain_alert/modules/splash/splash_page.dart';
 import 'package:rain_alert/notifications/notifications_controller.dart';
 import 'package:rain_alert/notifications/notifications_page.dart';
+import 'package:rain_alert/shared/services/auth_service.dart';
 import 'package:rain_alert/shared/services/geolocator_service.dart';
 import 'package:rain_alert/shared/services/weather_service.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -25,6 +27,7 @@ class AppWidget extends StatelessWidget {
         Provider(create: (_) => SplashController()),
         Provider(create: (_) => GeolocatorService()),
         Provider(create: (_) => WeatherService()),
+        Provider(create: (_) => AuthService()),
         ChangeNotifierProvider(create: (_) => SettingsController()),
         ChangeNotifierProvider(create: (_) => NotificationsController()),
 
@@ -52,6 +55,7 @@ class AppWidget extends StatelessWidget {
                 create: (context) => NotificationsController(),
                 child: const NotificationsPage(),
               ),
+          '/login': (context) => const LoginPage(),
         },
       ),
     );
